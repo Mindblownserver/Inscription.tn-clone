@@ -127,9 +127,6 @@ import Divider from 'primevue/divider';
 
 }
 
-.cardBody{
-    padding-top: 16px;
-}
 .title {
   font-weight: 600;
   font-size: 16px;
