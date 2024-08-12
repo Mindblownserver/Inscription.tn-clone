@@ -2,18 +2,18 @@
     <div class="container">
         <Card class="item1">
             <template #header>
-                <img class="cardImg" src="../../../../assets/images/paymentCards.png" alt="">
-                <Button class="btn" label="View Payment" severity="success" raised />
-                <h1 class="cardTitle">Payment</h1>
+                <img class="cardImg" src="../../../../assets/images/viewStudents.png" alt="">
+                <Button class="btn" label="View Studets" severity="success" raised />
+                <h1 class="cardTitle">Students</h1>
             </template>
         </Card>
 
         <!-- Usmanabce https://www.vecteezy.com/vector-art/26103040-profile-vector-icon-design -->
         <Card class="item2">
             <template #header>
-                <img class="cardImg" src="../../../../assets/images/profileCard.jpg" alt="">
-                <Button class="btn" label="View Profile" severity="secondary" raised />
-                <h1 class="cardTitle">Profile</h1>
+                <img class="cardImg" src="../../../../assets/images/deadline.png" alt="">
+                <Button class="btn" label="Manage registration periode" severity="secondary" raised />
+                <h1 class="cardTitle">Registration Periode</h1>
             </template>
         </Card>
 
@@ -33,11 +33,11 @@
             </template>
         </Card>
         <!-- from djvstock https://www.vecteezy.com/vector-art/2471079-student-man-with-glasses-and-bag-character-cartoon-people-student-university -->
-        <img class="item5" src="../../../../assets/images/student.png" alt="">
+        <img class="item5" src="../../../../assets/images/university.png" alt="">
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Card from 'primevue/card';
 import Button from 'primevue/button';
 

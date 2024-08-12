@@ -39,4 +39,8 @@ nav a.router-link-exact-active {
 body{
   background-color: var(--web-bg);
 }
+/* 
+*:focus{
+  outline: none;
+} */
 </style>
