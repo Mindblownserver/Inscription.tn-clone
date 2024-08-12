@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import studentRoute from '@/features/student/router/studentRoute'
 import uniRoute from '@/features/university/router/uniRoute'
-
+import adminRoute from "@/features/admin/router/adminRoute"
 const routes: Array<RouteRecordRaw> = [
   
   {
@@ -15,7 +15,8 @@ const routes: Array<RouteRecordRaw> = [
     component:()=> import("../features/login/views/login.vue")
   },
   ...studentRoute,
-  ...uniRoute
+  ...uniRoute,
+  ...adminRoute
 ]
 
 const router = createRouter({
