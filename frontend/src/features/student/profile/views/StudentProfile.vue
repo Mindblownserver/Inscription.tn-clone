@@ -50,14 +50,17 @@ let formData=ref<Student>({
 let carte=ref<carteEtu>();
 
 const updateCarte = (blob:Blob)=>{
+    console.log(blob)
     if(blob != null){
         blobToBase64(blob).then(base64Image=>{
             store.commit("studentModule/setStudentImage", base64Image)
             formData.value.photoEtu=base64Image;
+            carte.value?.loadPreviewCardInfo(formData.value);
             
         })
+    }else{
+        carte.value?.loadPreviewCardInfo(formData.value);
     }
-    carte.value?.loadPreviewCardInfo(formData.value);
     
 }
 

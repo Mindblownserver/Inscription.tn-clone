@@ -11,7 +11,7 @@
                     <InputText class="formInput" v-model="password" type="password" size="large" placeholder="Password" />
                     <br>
                     <div class="formElement">
-                        <p>Don't have an account? <router-link href="/signup">Sign up</router-link></p>
+                        <p>Don't have an account? <router-link to="/signup">Sign up</router-link></p>
                     </div>
                     <Button class="btn" label="Login" severity="info" raised @click="handleLogin"/>
                 </form>

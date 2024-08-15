@@ -46,7 +46,12 @@ let props=defineProps<{formData: Student}>()
 const emit = defineEmits(['update:formData','update:Student']);
 
 const saveChanges = ()=>{
-    convertToBlob();
+    if (!selectedFile.value) {
+      return;
+    }
+
+    // The File object is already a Blob
+    blob.value = selectedFile.value;
     emit("update:Student",blob.value)
 }
 
@@ -80,16 +85,6 @@ const handleFileChange = (event: any) => {
   }
 };
 
-
-const convertToBlob = () => {
-  if (!selectedFile.value) {
-    return;
-  }
-
-  // The File object is already a Blob
-  blob.value = selectedFile.value;
-
-};
 </script>
 
 <style scoped>

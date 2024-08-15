@@ -29,7 +29,7 @@
         <Card class="item4">
             <template #header>
                 <img class="cardImg" src="../../../../assets/images/FAQCard.png" alt="">
-                <Button class="btn" label="FAQ" severity="help" raised />
+                <Button class="btn" label="FAQ" severity="help" raised @click="router.push({name:'FAQ'})"/>
                 <h1 class="cardTitle">View FAQ</h1>
             </template>
         </Card>

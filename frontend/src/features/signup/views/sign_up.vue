@@ -13,7 +13,7 @@
                     <InputText class="formInput" v-model="confirmPassword" type="password" size="large" placeholder="Confirm password" />
                     
                     <div class="formElement">
-                        <p>Have an account? <a href="/login">Login</a></p>
+                        <p>Have an account? <router-link to="/login">Login</router-link></p>
                     </div>
                     <Button class="btn" label="Sing up" severity="info" raised @click="handleRegister"/>
                 </form>
