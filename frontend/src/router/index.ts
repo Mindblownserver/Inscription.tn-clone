@@ -20,7 +20,12 @@ const routes: Array<RouteRecordRaw> = [
   },
   ...studentRoute,
   ...uniRoute,
-  ...adminRoute
+  ...adminRoute,
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: ()=> import("../features/404/Error404.vue"),
+  },
 ]
 
 const router = createRouter({
