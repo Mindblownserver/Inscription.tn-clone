@@ -15,5 +15,5 @@ public record Etudiant(
     String nomMere,
     String prenomMere,
     String professionMere,
-    byte[] photoEtu // BLOB as byte array
+    String photoEtu // BLOB as byte array
 ) {}

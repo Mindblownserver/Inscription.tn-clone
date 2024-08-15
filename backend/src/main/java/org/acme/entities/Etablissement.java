@@ -5,6 +5,6 @@ public record Etablissement(
     String nomFrEtab,
     String nomArEtab,
     University uni,
-    byte[] photoEtab // Changed to byte array
+    String photoEtab // Changed to byte array
 ) {}
 

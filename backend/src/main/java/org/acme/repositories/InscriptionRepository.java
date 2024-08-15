@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import java.util.Base64.Encoder;
 
 import javax.sql.DataSource;
 
@@ -24,6 +26,8 @@ import jakarta.inject.Inject;
 public class InscriptionRepository {
     @Inject
     DataSource dataSource;
+
+    private Encoder encoder = Base64.getEncoder();
 
     public List<Inscription> getInscriptions() throws SQLException{
         List<Inscription> inscripList= new ArrayList<>();
@@ -93,7 +97,8 @@ public class InscriptionRepository {
                     University uni =getUniversityById(rs.getString("UNI"));
                     etab = new Etablissement(rs.getString("ID_ETAB"), 
                     rs.getString("NOM_FR_ETAB"), rs.getString("NOM_AR_ETAB"), 
-                    uni, rs.getBytes("PHOTO_ETAB"));
+                    uni, 
+                    encoder.encodeToString(rs.getBytes("PHOTO_ETAB")));
                     return etab;
                 }
         }
@@ -108,7 +113,8 @@ public class InscriptionRepository {
                 try(ResultSet rs =ps.executeQuery()){
                     rs.next();
                     uni =new University(idUni, rs.getString("NOM_FR_UNI"), 
-                    rs.getString("NOM_AR_UNI"), rs.getBytes("PHOTO_UNI"));
+                    rs.getString("NOM_AR_UNI"), 
+                    encoder.encodeToString(rs.getBytes("PHOTO_UNI")));
                     return uni;
                 }
         }
@@ -125,6 +131,7 @@ public class InscriptionRepository {
                 ps.setString(1, cin);
                 try(ResultSet rs =ps.executeQuery()){
                     rs.next();
+                    
                     etu =new Etudiant(rs.getString("CIN"), 
                     rs.getString("NOM_FR_ETU"), 
                     rs.getString("PRENOM_FR_ETU"),
@@ -137,7 +144,7 @@ public class InscriptionRepository {
                     rs.getString("NOM_MERE"),
                     rs.getString("PRENOM_MERE"),
                     rs.getString("PROFESSION_MERE"),
-                    rs.getBytes("PHOTO_ETU")
+                    encoder.encodeToString(rs.getBytes("PHOTO_ETU"))
                     );
                     return etu;
                 }

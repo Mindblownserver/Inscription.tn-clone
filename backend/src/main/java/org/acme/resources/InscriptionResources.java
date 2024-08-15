@@ -5,6 +5,7 @@ import java.util.List;
 import org.acme.entities.Inscription;
 import org.acme.repositories.InscriptionRepository;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -18,6 +19,7 @@ public class InscriptionResources {
 
     @Path("inscriptions")
     @GET
+    @RolesAllowed("admin")
     public Response getInscriptions(){
         try {
             List<Inscription> inscriptionList = inscriptionRepository.getInscriptions();
@@ -30,6 +32,7 @@ public class InscriptionResources {
     }
     @Path("inscription/{cin}")
     @GET
+    @RolesAllowed("student")
     public Response getInscription(@PathParam("cin") String cin){
         try {
             List<Inscription> inscriptionList = inscriptionRepository.getInscription(cin);
