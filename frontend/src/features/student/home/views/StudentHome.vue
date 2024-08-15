@@ -4,7 +4,7 @@
         <Card class="item1">
             <template #header>
                 <img class="cardImg" src="../../../../assets/images/paymentCards.png" alt="">
-                <Button class="btn" @click="route.push({name:'StudentPayment'})" label="View Payment" severity="success" raised />
+                <Button class="btn" @click="router.push({name:'StudentPayment'})" label="View Payment" severity="success" raised />
                 <h1 class="cardTitle">Payment</h1>
             </template>
         </Card>
@@ -13,7 +13,7 @@
         <Card class="item2">
             <template #header>
                 <img class="cardImg" src="../../../../assets/images/profileCard.jpg" alt="">
-                <Button class="btn" @click="route.push({name:'StudentProfile'})" label="View Profile" severity="secondary" raised />
+                <Button class="btn" @click="router.push({name:'StudentProfile'})" label="View Profile" severity="secondary" raised />
                 <h1 class="cardTitle">Profile</h1>
             </template>
         </Card>
@@ -44,8 +44,12 @@ import Card from 'primevue/card';
 import Button from 'primevue/button';
 import { useRouter } from 'vue-router';
 
-const route = useRouter();
+const router = useRouter();
+
+
 </script>
+
+
 <style scoped>
 .container{
     display: grid;

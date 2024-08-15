@@ -32,6 +32,10 @@ export const studentModule={
         },
         setStudent(state:State,student: Student){
             state.student=student;
+        },
+        setStudentImage(state:State, base64Image: string){
+            if(state.student)
+                state.student.photoEtu=base64Image;
         }
     },
     actions:{
@@ -39,7 +43,18 @@ export const studentModule={
             try {
                 const res = await myApi.getInscriptionByCin<Array<Inscription>>(cin);
                 commit("setInscriptions", res.data);
-                commit("setStudent", res.data[0].etu);
+                console.log(res.data)
+            } catch (error) {
+                commit("setError", error);
+            } finally {
+                commit("setLoading", false);
+            }
+        },
+
+        async getStudentByCin({commit}: ActionContext<State, any>, cin:string){
+            try {
+                const res = await myApi.getStudentByCin<Array<Student>>(cin);
+                commit("setStudent", res.data);
                 console.log(res.data)
             } catch (error) {
                 commit("setError", error);

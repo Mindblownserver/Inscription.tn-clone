@@ -50,7 +50,7 @@
                         <div class="content2">
                             <div class="verif">
                                 <h2 style="margin-bottom: -10px;">Verifier la carte d'étudiant</h2>
-                                <p>If there's some mistake or the photo didn't render correctly, please modify it in your <a href="">profile</a></p>
+                                <p>If there's some mistake or the photo didn't render correctly, please modify it in your <a href="/student/profile">profile</a></p>
                             </div>
                             <CartEtudiantVerif ref="carteEtu"/>
                             <div class="buttonLayout">
@@ -62,7 +62,40 @@
                 </StepPanel>
                 <StepPanel v-slot="{ activateCallback }" value="3">
                     <div class="panel-content">
-                        <div class="content3">Content III</div>
+                        <div class="content3">
+                            <Button style="margin-left: 10px;" icon-pos="left" label="Payer" severity="warn" text> 
+                                <template #icon>
+                                    <i class="material-icons-round opacity-10 fs-5">credit_card</i>
+                                </template>
+                            </Button>
+                            <div class="tagContent">
+                                <Tag severity="info" value="Carte E-dinar/jeune">
+                                    <template #icon>
+                                        <i class="material-icons-round opacity-10 fs-5">check_circle</i>
+                                    </template>
+                                </Tag>
+                                <Tag severity="success" value="Carte Zitouna">
+                                    <template #icon>
+                                        <i class="material-icons-round opacity-10 fs-5">check_circle</i>
+                                    </template>
+                                </Tag>
+                                <Tag severity="info" value="Carte STB">
+                                    <template #icon>
+                                        <i class="material-icons-round opacity-10 fs-5">check_circle</i>
+                                    </template>
+                                </Tag>
+                                <Tag severity="success" value="Carte BIAT">
+                                    <template #icon>
+                                        <i class="material-icons-round opacity-10 fs-5">check_circle</i>
+                                    </template>
+                                </Tag>
+                                <Tag severity="success" value="Carte UIB">
+                                    <template #icon>
+                                        <i class="material-icons-round opacity-10 fs-5">check_circle</i>
+                                    </template>
+                                </Tag>
+                            </div>
+                        </div>
                     </div>
                     <div class="step-controls">
                         <Button label="Back" severity="secondary" icon="pi pi-arrow-left" @click="activateCallback('2')" />
@@ -86,11 +119,13 @@ import Button from 'primevue/button';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Select from 'primevue/select';
+import Tag from 'primevue/tag';
 import { FilterMatchMode } from '@primevue/core/api';
 import CartEtudiantVerif from "../../components/CarteEtudiantVerif.vue"
 import { useStore } from 'vuex';
 import { computed, onMounted, ref } from 'vue';
 import { Inscription } from '../../utilities/interfaces';
+import { tokenToId } from '@/service/tokenDecryptor';
 
 interface CarteEtu {
   loadCardInfo: (data: any) => void;
@@ -146,7 +181,7 @@ const payerToVerifCarte = function(data:Inscription){
         carteEtu.value.loadCardInfo(data);
 }
 onMounted(()=>{
-    store.dispatch("studentModule/getInscriptionByCin", "11999019");
+    store.dispatch("studentModule/getInscriptionByCin", tokenToId(localStorage.getItem("accessToken")));
 })
 </script>
 
@@ -201,14 +236,28 @@ StepPanel.active {
     font-weight: 500;
     color: #333; /* Adjust as needed */
 }
-.content1, .content3{
+.content1{
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 
 }
+
 .content2{
     flex-direction: column;
     justify-content: start;
+}
+
+.content3{
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+}
+.tagContent{
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    margin-left: 10px;
 }
 /* Step Controls */
 .step-controls {

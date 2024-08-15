@@ -6,16 +6,30 @@
     </Button>
 
     <div class="dropdown-content">
-        <h5 style="margin-top: 20px;">11999019</h5>
-        <p style="color: silver;">med.yassine.kharrat@gmail.com</p>
+        <h5 style="margin-top: 20px;">{{userData.id}}</h5>
+        <h5>{{ userData.name }}</h5>
         <hr>
-        <a><i class="material-icons-round opacity-10 fs-5" style="margin-right: 20px">logout</i>Log out</a>
+        <Button label="Log out" text severity="danger" @click="logout">
+          <template #icon>
+            <i class="material-icons-round opacity-10 fs-5" style="margin-right: 20px">logout</i>
+          </template>
+        </Button>
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { myApi } from '@/service/MyApi';
+import UserInfo from '@/service/authService';
 import Button from 'primevue/button';
+import { useRouter } from 'vue-router';
 
+const props = defineProps<{userData: UserInfo}>();
+const router = useRouter();
+
+const logout= ()=>{
+  myApi.logout();
+  router.push({path:"/login"})
+}
 </script>
 <style scoped>
 .dropdown-content {

@@ -5,16 +5,19 @@ export default [
     {
         path: "/student",
         name: "StudentHome",
-        component: StudentHome
+        component: StudentHome,
+        meta: {requireAuth:true}
     },
     {
         path: "/student/payment",
         name: "StudentPayment",
-        component: StudentPayment
+        component: StudentPayment,
+        meta: {requireAuth:true}
     },
     {
         path: "/student/profile",
         name: "StudentProfile",
-        component: StudentProfile
+        component: StudentProfile,
+        meta: {requireAuth:true}
     }
 ]

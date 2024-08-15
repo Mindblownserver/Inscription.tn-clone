@@ -5,14 +5,14 @@ interface Student{
     prenomFrEtu: string;
     nomArEtu: string;
     prenomArEtu: string;
-    dateNaiss: Date;
+    dateNaiss: string;
     nomPere: string;
     prenomPere: string;
     professionPere: string;
     nomMere: string;
     prenomMere: string;
     professionMere: string;
-    photoEtu: Uint8Array;
+    photoEtu: string;
 }
 
 interface Inscription {
@@ -43,15 +43,17 @@ interface Etablissement{
     nomFrEtab: string,
     nomArEtab: string,
     uni: University,
-    photoEtab:Uint8Array
+    photoEtab:string
 }
 
 interface University{
     idUni: string,
     nomFrUni: string,
     nomArUni: string,
-    photoUni: Uint8Array
+    photoUni: string
 }
+
+
 
 export {Student, Inscription, FilliereEtablissement, University, Etablissement, Filliere};
  

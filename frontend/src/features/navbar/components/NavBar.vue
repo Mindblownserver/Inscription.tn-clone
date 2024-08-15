@@ -1,7 +1,13 @@
 <template>
     <ul class="nav" style="right:100px ;left:100px">
         <a href="/" class="title">Inscription.tn</a>
-        <ul class="middle">
+        <ul class="middle" v-if="isStudent()">
+          <li><router-link to="/student">Home</router-link></li>
+          <li><router-link to="/student/payment">Payement</router-link></li>
+          <li><router-link to="/student/profile">Profile</router-link></li>
+          <li><router-link to="/faq">FAQ</router-link></li>
+        </ul>
+        <ul class="middle" v-else>
           <li><router-link to="/student">student</router-link></li>
           <li><router-link to="/university">university</router-link></li>
           <li><router-link to="/recipes/all">Recipes</router-link></li>
@@ -9,15 +15,49 @@
         </ul>
         
         <div class="right">
-          <DropDownBtn/>
+          <DropDownBtn v-model:userData="userData"/>
         </div>
 
     </ul>
     
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { onMounted, ref } from "vue";
 import DropDownBtn from "./DropDownBtn.vue"
+import { useStore } from "vuex";
+import { Student } from "@/features/student/utilities/interfaces";
+import UserInfo from "@/service/authService";
+import { tokenToId } from "@/service/tokenDecryptor";
+
+const store = useStore();
+const userData = ref<UserInfo>({
+  id:"",
+  name: ""
+})
+
+const isStudent = ()=>localStorage.getItem('role')=='student';
+const isUniversity = ()=>localStorage.getItem("role")=="university";
+
+onMounted(() => {
+  if(tokenToId(localStorage.getItem("accessToken"))){
+    if(isStudent()){
+      console.log(tokenToId(localStorage.getItem("accessToken")))
+      store.dispatch("studentModule/getStudentByCin", tokenToId(localStorage.getItem("accessToken"))).then(()=>{
+          let studentInfo: Student = store.state.studentModule.student;
+          console.log(studentInfo);
+          userData.value.id = studentInfo.cin;
+          userData.value.name = studentInfo.prenomFrEtu + " " + studentInfo.nomFrEtu
+      }).catch(error=>{
+        alert(error)
+      })
+    }else if(isUniversity()){
+      console.log("Uni detected")
+    }
+  }else{
+    console.error("Not logged in..yet :)")
+  } 
+})
 </script>
 
 <style scoped>

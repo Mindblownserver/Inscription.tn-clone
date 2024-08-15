@@ -8,16 +8,14 @@
                 <form>  
                     <InputText class="formInput" v-model="cin" type="text" size="large" placeholder="CIN" :invalid="!cinValidator.test(cin)" />
                     <br>
-                    <InputText class="formInput" v-model="email" type="text" size="large" placeholder="Email" :invalid="!emailValidator.test(email)" />
-                    <br>
                     <InputText class="formInput" v-model="password" type="password" size="large" placeholder="Password" />
                     <br>
                     <InputText class="formInput" v-model="confirmPassword" type="password" size="large" placeholder="Confirm password" />
                     
                     <div class="formElement">
-                        <p>Don't have an account? <a href="/login">Login</a></p>
+                        <p>Have an account? <a href="/login">Login</a></p>
                     </div>
-                    <Button class="btn" label="Login" severity="info" raised />
+                    <Button class="btn" label="Sing up" severity="info" raised @click="handleRegister"/>
                 </form>
             </div>
         </div>
@@ -27,15 +25,34 @@
 import { ref } from 'vue';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
+import { myApi } from '@/service/MyApi';
+import { useRouter } from 'vue-router';
 
-const email = ref("");
+//const email = ref("");
+//const emailValidator = new RegExp("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
 const password = ref("");
 const confirmPassword = ref("");
 const cin = ref("");
 
-const emailValidator = new RegExp("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
 const cinValidator = new RegExp("^\\d{8}$")
 
+const router = useRouter();
+
+const handleRegister = async () => {
+    try {
+        console.log()
+        if(cinValidator.test(cin.value) && confirmPassword.value==password.value){
+            await myApi.register(cin.value, password.value);
+            alert('Registration successful!');
+            router.push({path:'/login'})
+        }
+        else
+            alert("cin or password wrong")
+    } catch (error) {
+    console.error('Registration failed:', error);
+    alert('Registration failed!');
+    }
+};
 
 
 </script>

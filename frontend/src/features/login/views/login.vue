@@ -6,14 +6,14 @@
             <div class="form">
                 <h2>Login to Insription.tn</h2>
                 <form>
-                    <InputText class="formInput" v-model="email" type="text" size="large" placeholder="Email" :invalid="!emailValidator.test(email)" />
+                    <InputText class="formInput" v-model="cin" type="text" size="large" placeholder="Cin" :invalid="!cinValidator.test(cin)" />
                     <br>
                     <InputText class="formInput" v-model="password" type="password" size="large" placeholder="Password" />
                     <br>
                     <div class="formElement">
-                        <p>Don't have an account? <a href="/signup">Sign up</a></p>
+                        <p>Don't have an account? <router-link href="/signup">Sign up</router-link></p>
                     </div>
-                    <Button class="btn" label="Login" severity="info" raised />
+                    <Button class="btn" label="Login" severity="info" raised @click="handleLogin"/>
                 </form>
             </div>
         </div>
@@ -24,10 +24,32 @@
 import { ref } from 'vue';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
+import { myApi } from '@/service/MyApi';
+import { useRouter } from 'vue-router';
 
-const email = ref("");
+const cin = ref("");
+const cinValidator = new RegExp("^\\d{8}$")
+
 const password = ref("");
-const emailValidator = new RegExp("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
+
+const router = useRouter()
+
+
+const handleLogin = async () => {
+    try {
+        if(cinValidator.test(cin.value)){
+            await myApi.login(cin.value, password.value);
+            alert('Login successful!');
+            router.push({path:'/'+localStorage.getItem("role")})
+        }
+    } catch (error) {
+    console.error('Login failed:', error);
+    alert('Login failed!');
+    }
+};
+
+
+
 </script>
 
 <style scoped>
