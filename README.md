@@ -9,3 +9,6 @@ User-friendly and simple UI components present all of this.
 The Universities are registered by the government. Each administration can view their registered students and manage the registration period.
 ## Admin (not finished)
 The Admin can view every university, every registered student and some statistics. He/she can receive messages from students and uni administrators to answer their inquiries and consult yearly-updated statistics.
+
+## Demo
+[LinkedIn Post](https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7229952792616984577)
