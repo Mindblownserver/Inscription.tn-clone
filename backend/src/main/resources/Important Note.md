@@ -9,4 +9,4 @@ For now, I'll just paste the command to generate both keys
 ``` openssl rsa -pubout -in private.key -out public.key ```
 
 ## Remark
-Make sure the name of the key files are true to what appears in application.properties after "classpath:"
+Make sure the name of the key files and how they're mentioned in application.properties after "classpath:" are the same
