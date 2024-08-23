@@ -1,4 +1,4 @@
-package org.acme.resources;
+package org.acme.entities;
 
 public class LoginRequest {
     private String username;

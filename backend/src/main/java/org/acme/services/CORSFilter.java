@@ -1,4 +1,4 @@
-package org.acme.resources;
+package org.acme.services;
 import java.io.IOException;
 
 import jakarta.inject.Singleton;

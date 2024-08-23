@@ -1,7 +1,12 @@
 package org.acme.resources;
 
+import org.acme.entities.LoginRequest;
+import org.acme.entities.RefreshRequest;
+import org.acme.entities.RegisterRequest;
 import org.acme.entities.User;
 import org.acme.repositories.UserRepository;
+import org.acme.services.PasswordUtils;
+import org.acme.services.TokenService;
 
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -35,12 +40,12 @@ public class AuthResource {
     }
 
     public class RefreshTokenResponse{
-        public String acessToken;
-        public String refreshToken;
+        public String newAccessToken;
+        public String newRefreshToken;
 
         public RefreshTokenResponse(String acessToken, String refreshToken) {
-            this.acessToken = acessToken;
-            this.refreshToken = refreshToken;
+            this.newAccessToken = acessToken;
+            this.newRefreshToken = refreshToken;
         }
         
     }   
@@ -53,7 +58,6 @@ public class AuthResource {
             User user =userRepository.getUserByUsername(request.getUsername());
             if (user != null && PasswordUtils.checkPassword(request.getPassword(), user.getPasswordHash())) {
                 String accessToken = tokenService.generateAccessToken(user);
-                //log.error(accessToken);
                 String refreshToken = tokenService.generateRefreshToken(user);
                 AuthResponse authResponse = new AuthResponse(accessToken, refreshToken, user.getRole().getRoleName());
                 return Response.ok().entity(authResponse).build();

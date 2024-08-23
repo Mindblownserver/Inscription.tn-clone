@@ -1,4 +1,4 @@
-package org.acme.resources;
+package org.acme.services;
 
 import org.mindrot.jbcrypt.BCrypt;
 

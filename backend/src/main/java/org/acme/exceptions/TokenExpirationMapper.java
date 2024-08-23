@@ -1,10 +1,7 @@
 package org.acme.exceptions;
 
-import org.jboss.logging.Logger;
-
 import io.quarkus.security.AuthenticationFailedException;
-import jakarta.inject.Inject;
-import jakarta.ws.rs.NotAuthorizedException;
+
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
