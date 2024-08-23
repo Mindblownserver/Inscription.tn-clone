@@ -6,7 +6,7 @@
         <MyInputText label="Prenom" v-model:value="formData.prenomFrEtu"/>
         <MyInputText label="الاسم"  v-model:value="formData.prenomArEtu"/> 
         <MyInputText label="اللقب" v-model:value="formData.nomArEtu"/> 
-        <MyInputText label="Date de naissance" v-model:value="formData.dateNaiss"/>
+        <DatePicker v-model:date="formData.dateNaiss"/>
         <Button label="Choose File" @click="chooseFile" text/>
         <input type="file" name="inputFile" id="inputFile" style="display: none;" @change="(e)=>{previewImg(e);handleFileChange(e)}">
         <img src="" id="previewImg" alt="choisir une image">
@@ -37,6 +37,7 @@ import Fieldset from 'primevue/fieldset';
 import Button from 'primevue/button';
 import { ref } from 'vue';
 import { Student } from '../../utilities/interfaces';
+import DatePicker from './DatePicker.vue';
 
 const selectedFile = ref<File | null>(null);
 const blob = ref<Blob | null>(null);
@@ -47,7 +48,7 @@ const emit = defineEmits(['update:formData','update:Student']);
 
 const saveChanges = ()=>{
     if (!selectedFile.value) {
-      return;
+      blob.value = null
     }
 
     // The File object is already a Blob
@@ -94,5 +95,8 @@ const handleFileChange = (event: any) => {
 .btnLayout{
     display: flex;
     justify-content: end;
+}
+#previewImg{
+  width: 130px;
 }
 </style>

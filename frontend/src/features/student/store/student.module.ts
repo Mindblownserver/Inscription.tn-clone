@@ -1,6 +1,7 @@
 import {myApi} from "@/service/MyApi";
 import { ActionContext } from "vuex";
 import { Student,Inscription } from "../utilities/interfaces";
+import { RefreshTokenError, RefreshTokenErrorFct, isRefreshTokenError } from "@/service/authService";
 
 interface State {
     loading: boolean;
@@ -43,9 +44,13 @@ export const studentModule={
             try {
                 const res = await myApi.getInscriptionByCin<Array<Inscription>>(cin);
                 commit("setInscriptions", res.data);
-                console.log(res.data)
             } catch (error) {
                 commit("setError", error);
+                if(isRefreshTokenError(error as Error)){
+                    throw error;
+                }else{
+                    throw error;
+                }
             } finally {
                 commit("setLoading", false);
             }
@@ -55,13 +60,30 @@ export const studentModule={
             try {
                 const res = await myApi.getStudentByCin<Array<Student>>(cin);
                 commit("setStudent", res.data);
-                console.log(res.data)
             } catch (error) {
                 commit("setError", error);
+                if(isRefreshTokenError(error as Error)){
+                    throw error;
+                }else{
+                    throw error;
+                }
             } finally {
                 commit("setLoading", false);
             }
+        },
+        async updateStudent({commit}: ActionContext<State, any>, stu: Student){
+            try{
+                commit("setStudent", stu);
+                await myApi.updateStudent(stu);
+                console.log("Updated");
+            }catch (error) {
+                commit("setError", error);
+                if(isRefreshTokenError(error as Error)){
+                    throw error;
+                }else{
+                    throw error;
+                }
+            }
         }
     }
-
 }

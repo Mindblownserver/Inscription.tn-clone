@@ -126,6 +126,11 @@ import { useStore } from 'vuex';
 import { computed, onMounted, ref } from 'vue';
 import { Inscription } from '../../utilities/interfaces';
 import { tokenToId } from '@/service/tokenDecryptor';
+import { useRouter } from 'vue-router';
+import { isRefreshTokenError } from '@/service/authService';
+import { showError } from '@/service/myToastService';
+import { useToast } from 'primevue/usetoast';
+import { myApi } from '@/service/MyApi';
 
 interface CarteEtu {
   loadCardInfo: (data: any) => void;
@@ -135,6 +140,8 @@ const isSelected = ref(false);
 const carteEtu = ref<CarteEtu | null>(null);
 
 const store = useStore();
+const router = useRouter();
+const toast = useToast();
 
 const columns = [
   { field: 'au', header: 'AU' },
@@ -181,7 +188,16 @@ const payerToVerifCarte = function(data:Inscription){
         carteEtu.value.loadCardInfo(data);
 }
 onMounted(()=>{
-    store.dispatch("studentModule/getInscriptionByCin", tokenToId(localStorage.getItem("accessToken")));
+    store.dispatch("studentModule/getInscriptionByCin", tokenToId(localStorage.getItem("accessToken")))
+    .catch((error)=>{
+        if(isRefreshTokenError(error as Error)){
+            showError(toast, error.message, "We're redirecting to login page")
+            myApi.logout()
+            router.push("/login");
+        }
+        else
+          console.error("Navbar: ",error);
+    })
 })
 </script>
 

@@ -3,6 +3,7 @@
         <div class="img"><img src="../../../assets/images/University Life Illustration.jpg" alt="login cover art">
         </div>
         <div class="content">
+            
             <div class="form">
                 <h2>Login to Insription.tn</h2>
                 <form>
@@ -20,31 +21,33 @@
     </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import { myApi } from '@/service/MyApi';
 import { useRouter } from 'vue-router';
+import { useToast } from 'primevue/usetoast';
+import { showError, showSuccess } from '@/service/myToastService';
 
 const cin = ref("");
 const cinValidator = new RegExp("^\\d{8}$")
-
+const toast = useToast();
 const password = ref("");
 
 const router = useRouter()
-
 
 const handleLogin = async () => {
     try {
         if(cinValidator.test(cin.value)){
             await myApi.login(cin.value, password.value);
-            alert('Login successful!');
+            showSuccess(toast,"Login success", "You'll be redirected to your home page")
+            
             router.push({path:'/'+localStorage.getItem("role")})
         }
     } catch (error) {
     console.error('Login failed:', error);
-    alert('Login failed!');
+    showError(toast, "Login failed", "Your username and/or password are/is wrong")
     }
 };
 

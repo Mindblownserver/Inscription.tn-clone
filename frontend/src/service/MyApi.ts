@@ -1,5 +1,6 @@
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
-
+import { Student } from '@/features/student/utilities/interfaces';
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { RefreshTokenErrorFct } from './authService';
 class MyAPI {
   private instance: AxiosInstance;
 
@@ -13,7 +14,6 @@ class MyAPI {
       const token = localStorage.getItem('accessToken');
       if (token) {
         config.headers['Authorization'] = `Bearer ${token}`;
-        console.log('Adding Authorization header:', `Bearer ${token}`);
       } else {
         console.log('No token found in localStorage');
       }
@@ -25,10 +25,10 @@ class MyAPI {
     // interceptor for handling refresh token
     // Response Interceptor: Handle token refresh
     this.instance.interceptors.response.use(
-      response => response,
-      async error => {
+      (response:AxiosResponse) => response,
+      async (error: AxiosError) => {
         const { response } = error;
-        const originalRequest = error.config;
+        const originalRequest: AxiosRequestConfig = error.config|| {};
 
         // Check for token expiration
         if (response && response.status === 401 && response.data === 'Token expired') {
@@ -39,23 +39,30 @@ class MyAPI {
                 refreshToken
               });
 
-              const { accessToken, newRefreshToken } = refreshResponse.data;
+              const { newAccessToken, newRefreshToken } = refreshResponse.data;
 
               // Save the new tokens
-              localStorage.setItem('accessToken', accessToken);
+              localStorage.setItem('accessToken', newAccessToken);
               localStorage.setItem('refreshToken', newRefreshToken);
 
               // Retry the original request with the new access token
-              originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
+              if (originalRequest.headers) {
+                originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+              } else {
+                originalRequest.headers = { 'Authorization': `Bearer ${newAccessToken}` };
+              }
+              console.log("Token refreshed")
               return this.instance.request(originalRequest);
             } catch (refreshError) {
               console.error('Token refresh failed:', refreshError);
-              // Optionally, you might want to redirect to login or handle the error
-              return Promise.reject(refreshError);
+              
+              this.logout();
+              throw RefreshTokenErrorFct("Invalid Refresh Token");
             }
           } else {
             console.log('No refresh token found in localStorage');
-            // Optionally, you might want to redirect to login or handle the error
+            this.logout();
+            throw RefreshTokenErrorFct("No refresh token found")
           }
         }
 
@@ -93,7 +100,6 @@ class MyAPI {
   public async login(username: string, password: string): Promise<void> {
     try {
       const response = await this.instance.post<{accessToken: string, refreshToken: string, userRole:string}>('/auth/login', { username, password });
-      console.log(response.data)
       localStorage.setItem('accessToken', response.data.accessToken);
       localStorage.setItem('refreshToken', response.data.refreshToken);
       localStorage.setItem('role', response.data.userRole);
@@ -108,6 +114,17 @@ class MyAPI {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('role');
+  }
+  public async updateStudent(student:Student): Promise<void>{
+    try{
+      const response = await this.instance.put("/api/etudiant", student, {
+        headers:{
+          "Content-Type": "application/json"
+        }
+      })
+    }catch(error){
+      throw error;
+    }
   }
 }
 export const myApi  =new MyAPI("http://localhost:8080");

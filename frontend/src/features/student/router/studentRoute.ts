@@ -6,18 +6,18 @@ export default [
         path: "/student",
         name: "StudentHome",
         component: StudentHome,
-        meta: {requireAuth:true}
+        meta: {requireAuth:true, role:"student"}
     },
     {
         path: "/student/payment",
         name: "StudentPayment",
         component: StudentPayment,
-        meta: {requireAuth:true}
+        meta: {requireAuth:true, role:"student"}
     },
     {
         path: "/student/profile",
         name: "StudentProfile",
         component: StudentProfile,
-        meta: {requireAuth:true}
+        meta: {requireAuth:true, role:"student"}
     }
 ]

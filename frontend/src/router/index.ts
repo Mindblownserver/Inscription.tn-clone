@@ -65,4 +65,20 @@ switch (localStorage.getItem("role")) {
           return "/login";
       }
 */
+router.beforeEach((to, from, next) => {
+  const isLoggedIn = !!localStorage.getItem("accessToken");
+
+  // Redirect to sign-in if trying to access any page and not logged in
+  if (!isLoggedIn && to.name !== 'Login' && to.name !== 'SignUp') {
+    return next({ name: 'Login' });
+  }
+
+  // If logged in and trying to access sign-in or sign-up, redirect to dashboard
+  if (isLoggedIn && (to.name === 'Login' || to.name === 'SignUp')) {
+    return next({ name: 'StudentHome' });
+  }
+
+  next();
+});
+
 export default router

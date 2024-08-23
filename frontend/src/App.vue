@@ -2,13 +2,17 @@
   <nav v-if="route.path !== '/signup' && route.path !== '/login' ">
     <NavBar />
   </nav>
+  <Toast/>
+  
   <router-view/>
 </template>
-<script setup>
+<script setup lang="ts">
 import NavBar from './features/navbar/components/NavBar.vue';
 import { useRoute } from "vue-router";
+import Toast from 'primevue/toast';
 
 const route = useRoute();
+
 </script>
 <style>
 #app {

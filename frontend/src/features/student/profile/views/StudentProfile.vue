@@ -24,12 +24,20 @@ import { onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
 import { Student } from '../../utilities/interfaces';
 import { tokenToId } from '@/service/tokenDecryptor';
+import { myApi } from '@/service/MyApi';
+import { isRefreshTokenError } from '@/service/authService';
+import { useRouter } from 'vue-router';
+import { showError } from '@/service/myToastService';
+import { useToast } from 'primevue/usetoast';
 
 interface carteEtu{
     loadPreviewCardInfo: (data: Student)=>void
 }
 
 const store = useStore();
+const router = useRouter();
+const toast = useToast();
+
 let formData=ref<Student>({
     cin: "",
     nomFrEtu: "",
@@ -49,17 +57,38 @@ let formData=ref<Student>({
 
 let carte=ref<carteEtu>();
 
-const updateCarte = (blob:Blob)=>{
+const updateCarte = (blob:Blob|null)=>{
     console.log(blob)
     if(blob != null){
         blobToBase64(blob).then(base64Image=>{
             store.commit("studentModule/setStudentImage", base64Image)
-            formData.value.photoEtu=base64Image;
+            formData.value.photoEtu=base64Image;  
             carte.value?.loadPreviewCardInfo(formData.value);
-            
+            store.dispatch("studentModule/updateStudent", formData.value)
+            .catch((error)=>{
+                if(isRefreshTokenError(error as Error)){
+                    showError(toast, error.message, "We're redirecting to login page")
+                    myApi.logout()
+                    console.log(error.message)
+                    router.push("/login");
+                }
+                else
+                console.error("Navbar: ",error);
+            });   
         })
-    }else{
+    }
+    else{
         carte.value?.loadPreviewCardInfo(formData.value);
+        store.dispatch("studentModule/updateStudent", formData.value)
+        .catch((error)=>{
+        if(isRefreshTokenError(error as Error)){
+            showError(toast, error.message, "We're redirecting to login page")
+            myApi.logout()
+            router.push("/login");
+        }
+        else
+          console.error("Navbar: ",error);
+    });
     }
     
 }
@@ -87,13 +116,32 @@ function blobToBase64(blob: Blob): Promise<string> {
   });
 }
 
-
-onMounted(()=>{
+function loadData(token:string){
     store.dispatch("studentModule/getStudentByCin", tokenToId(localStorage.getItem("accessToken"))).then(()=>{
         console.log(store.state.studentModule.student);
         formData.value = store.state.studentModule.student;
         carte.value?.loadPreviewCardInfo(formData.value);
+    }).catch((error)=>{
+        if(isRefreshTokenError(error as Error)){
+            showError(toast, error.message, "We're redirecting to login page")
+            myApi.logout()
+            router.push("/login");
+        }
+        else
+          console.error("Student Profile: ",error);
     })
+}
+
+onMounted(()=>{
+    const token =tokenToId(localStorage.getItem("accessToken"));
+    if(token){
+        loadData(token);
+    }
+    else{
+        myApi.logout();
+        showError(toast, "Invalid access Token", "We're redirecting to login page");
+        router.push("/login")
+    }
 
 })
 </script>

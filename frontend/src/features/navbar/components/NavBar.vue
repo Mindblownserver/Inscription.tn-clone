@@ -27,10 +27,12 @@ import { onMounted, ref } from "vue";
 import DropDownBtn from "./DropDownBtn.vue"
 import { useStore } from "vuex";
 import { Student } from "@/features/student/utilities/interfaces";
-import UserInfo from "@/service/authService";
+import {UserInfo, isRefreshTokenError} from "@/service/authService";
 import { tokenToId } from "@/service/tokenDecryptor";
+import { useRouter } from "vue-router";
 
 const store = useStore();
+const router = useRouter();
 const userData = ref<UserInfo>({
   id:"",
   name: ""
@@ -40,16 +42,20 @@ const isStudent = ()=>localStorage.getItem('role')=='student';
 const isUniversity = ()=>localStorage.getItem("role")=="university";
 
 onMounted(() => {
-  if(tokenToId(localStorage.getItem("accessToken"))){
+  let cin = tokenToId(localStorage.getItem("accessToken"));
+  if(cin !=null){
     if(isStudent()){
       console.log(tokenToId(localStorage.getItem("accessToken")))
-      store.dispatch("studentModule/getStudentByCin", tokenToId(localStorage.getItem("accessToken"))).then(()=>{
+      store.dispatch("studentModule/getStudentByCin", cin).then(()=>{
           let studentInfo: Student = store.state.studentModule.student;
-          console.log(studentInfo);
           userData.value.id = studentInfo.cin;
           userData.value.name = studentInfo.prenomFrEtu + " " + studentInfo.nomFrEtu
-      }).catch(error=>{
-        alert(error)
+      }).catch((error)=>{
+        if(isRefreshTokenError(error as Error)){
+          router.push("/login");
+        }
+        else
+          console.error("Navbar: ",error)
       })
     }else if(isUniversity()){
       console.log("Uni detected")
