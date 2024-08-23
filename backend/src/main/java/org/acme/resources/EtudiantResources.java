@@ -4,11 +4,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.acme.entities.Etudiant;
-import org.acme.exceptions.TokenExpirationMapper;
 import org.acme.repositories.EtudiantRepository;
 
 import io.quarkus.logging.Log;
-import io.quarkus.security.UnauthorizedException;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
