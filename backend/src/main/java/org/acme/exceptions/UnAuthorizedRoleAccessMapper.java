@@ -1,6 +1,5 @@
 package org.acme.exceptions;
 
-import io.quarkus.logging.Log;
 import io.quarkus.security.ForbiddenException;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;

@@ -3,7 +3,6 @@ package org.acme.resources;
 import java.sql.SQLException;
 
 import org.acme.entities.Etablissement;
-import org.acme.entities.Etudiant;
 import org.acme.exceptions.UnAuthorizedEntityAccess;
 import org.acme.repositories.EtabRepository;
 import org.eclipse.microprofile.jwt.JsonWebToken;
@@ -13,7 +12,6 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
