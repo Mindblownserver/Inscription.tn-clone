@@ -37,7 +37,7 @@ public class TokenService {
         String newToken = Jwt.issuer(jwtConfig.getIssuer()) 
             .upn(getUsernameFromJwt(refreshToken))
             .groups("student") 
-            .expiresIn(Duration.ofSeconds(6)) 
+            .expiresIn(Duration.ofDays(6)) 
             .sign();
 
         return newToken;
@@ -71,7 +71,7 @@ public class TokenService {
         return Jwt.issuer(jwtConfig.getIssuer()) // apparently can have different issuer name
                 .upn(user.getUsername())
                 .groups(user.getRole().getRoleName())
-                .expiresIn(Duration.ofSeconds(3))
+                .expiresIn(Duration.ofDays(3))
                 .sign();
     }
     

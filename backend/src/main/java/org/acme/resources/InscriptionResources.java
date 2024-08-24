@@ -40,7 +40,7 @@ public class InscriptionResources {
     @RolesAllowed("student")
     public Response getInscription(@PathParam("cin") String cin){
         try {
-            List<Inscription> inscriptionList = inscriptionRepository.getInscription(cin);
+            List<Inscription> inscriptionList = inscriptionRepository.getInscriptionsParEtu(cin);
             if(inscriptionList.size()>0)
                 return Response.ok(inscriptionList).build();
             return Response.status(404).entity("Inscriptions Not Found").build();
@@ -52,5 +52,20 @@ public class InscriptionResources {
         }
     }
     
-
+    @Path("inscriptions/{facId}")
+    @GET
+    @RolesAllowed("university")
+    public Response getInscriptionsByFacId(@PathParam("facId") String facId){
+        try {
+            List<Inscription> inscriptionList = inscriptionRepository.getInscriptionsParFac(facId);
+            if(inscriptionList.size()>0)
+                return Response.ok(inscriptionList).build();
+            return Response.status(404).entity("Inscriptions Not Found").build();
+        } catch(SQLException sqlException){
+            Log.error(sqlException);
+            return Response.status(500).entity("An error occured in the server").build();
+        }catch (Exception e) {
+            return Response.status(403).entity(e).build();
+        }
+    }
 }

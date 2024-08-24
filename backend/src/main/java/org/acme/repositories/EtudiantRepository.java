@@ -15,8 +15,6 @@ import javax.sql.DataSource;
 
 import org.acme.entities.Etudiant;
 
-import com.fasterxml.jackson.databind.JsonSerializable.Base;
-
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -61,7 +59,7 @@ public class EtudiantRepository {
         if(cin.isEmpty()|| cin.length()!=8|| !cin.matches("^\\d{8}$")){
             return null;
         }
-        Etudiant etu;
+        Etudiant etu = null;
         String sql = "SELECT CIN, NOM_FR_ETU, PRENOM_FR_ETU, NOM_AR_ETU,"+
         "PRENOM_AR_ETU, DATE_NAISS, PHOTO_ETU, NOM_PERE, PRENOM_PERE,"+ 
         "PROFESSION_PERE, NOM_MERE, PRENOM_MERE, PROFESSION_MERE FROM Etudiant "+
@@ -70,8 +68,10 @@ public class EtudiantRepository {
             PreparedStatement ps = conn.prepareStatement(sql);){
                 ps.setString(1, cin);
                 try(ResultSet rs =ps.executeQuery()){
-                    rs.next();
-                    
+
+                    if(!rs.next())
+                        return null;
+
                     etu =new Etudiant(rs.getString("CIN"), 
                     rs.getString("NOM_FR_ETU"), 
                     rs.getString("PRENOM_FR_ETU"),

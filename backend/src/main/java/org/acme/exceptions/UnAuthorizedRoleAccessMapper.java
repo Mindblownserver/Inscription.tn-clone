@@ -1,5 +1,6 @@
 package org.acme.exceptions;
 
+import io.quarkus.logging.Log;
 import io.quarkus.security.ForbiddenException;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
@@ -8,7 +9,7 @@ import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 
 @Provider
-public class UnAuthorizedAccessMapper implements ExceptionMapper<ForbiddenException>{
+public class UnAuthorizedRoleAccessMapper implements ExceptionMapper<ForbiddenException>{
 
     @Inject
     SecurityContext securityContext;
@@ -22,7 +23,7 @@ public class UnAuthorizedAccessMapper implements ExceptionMapper<ForbiddenExcept
             userRole = "university or admin";   
         else
             userRole = "student or admin";
-
-        return Response.status(403).entity("Denied access for user "+ username+ ". Required Roles are "+userRole).build();
+        return Response.status(Response.Status.FORBIDDEN).entity("Denied access for user "+ username+ ". Required Roles are "+userRole).build();
+        
     }
 }

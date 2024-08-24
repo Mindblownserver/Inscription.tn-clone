@@ -4,7 +4,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.acme.entities.Etudiant;
+import org.acme.exceptions.UnAuthorizedEntityAccess;
 import org.acme.repositories.EtudiantRepository;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import io.quarkus.logging.Log;
 import jakarta.annotation.security.RolesAllowed;
@@ -19,12 +21,14 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 
-@Path("/api")
+@Path("/api/etudiant")
 public class EtudiantResources {
     @Inject
     EtudiantRepository etudiantRepository;
 
-    @Path("/etudiants")
+    @Inject
+    JsonWebToken jwt;
+
     @GET
     @RolesAllowed("admin")
     public Response getEtudiants(){
@@ -41,10 +45,14 @@ public class EtudiantResources {
         }
     }
 
-    @Path("/etudiant/{cin}")
+    @Path("/{cin}")
     @GET
     @RolesAllowed("student")
     public Response getEtudiant(@PathParam("cin") String cin){
+        String requestUsername = jwt.getClaim("upn");
+        if(!cin.toUpperCase().equals(requestUsername.toUpperCase()) && !requestUsername.equals("admin")){
+            throw new UnAuthorizedEntityAccess(String.format("Etudiant %s can't access data of the Etudiant %s", requestUsername, cin));
+        }
         try {
             Etudiant etudiant = etudiantRepository.getEtudiantByCin(cin);
             if(etudiant !=null)
@@ -58,12 +66,15 @@ public class EtudiantResources {
         }
     }
 
-    @Path("/etudiant")
     @PUT
     @RolesAllowed({"student", "admin"})
     @Consumes(MediaType.APPLICATION_JSON)
     @Transactional
     public Response updateEtudiant(Etudiant etu){
+        String requestUsername = jwt.getClaim("upn");
+        if(!etu.cin().toUpperCase().equals(requestUsername.toUpperCase()) && !requestUsername.equals("admin")){
+            throw new UnAuthorizedEntityAccess(String.format("Etudiant %s can't access data of the Etudiant %s", requestUsername, etu.cin()));
+        }
         try{
             boolean exist = etudiantRepository.existEtudiant(etu.cin());
             if(exist){
