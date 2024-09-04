@@ -124,7 +124,7 @@ import { FilterMatchMode } from '@primevue/core/api';
 import CartEtudiantVerif from "../../components/CarteEtudiantVerif.vue"
 import { useStore } from 'vuex';
 import { computed, onMounted, ref } from 'vue';
-import { Inscription } from '../../utilities/interfaces';
+import { Inscription } from '../../../../utilities/interfaces';
 import { tokenToId } from '@/service/tokenDecryptor';
 import { useRouter } from 'vue-router';
 import { isRefreshTokenError } from '@/service/authService';

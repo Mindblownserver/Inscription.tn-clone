@@ -54,7 +54,7 @@ public class EtabResource {
     @PUT
     @RolesAllowed({"university", "admin"})
     @Transactional
-    public Response updateEtudiant(Etablissement etab){
+    public Response updateEtab(Etablissement etab){
         try{
             boolean exist = etabRepository.existEtablissement(etab.idEtab());
             if(exist){

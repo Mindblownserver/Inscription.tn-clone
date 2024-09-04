@@ -3,7 +3,7 @@
         <Card class="item1">
             <template #header>
                 <img class="cardImg" src="../../../../assets/images/viewStudents.png" alt="">
-                <Button class="btn" label="View Studets" severity="success" raised />
+                <Button class="btn" label="View Studets" severity="success" raised  @click="router.push({name: 'UniStudents'}) "/>
                 <h1 class="cardTitle">Students</h1>
             </template>
         </Card>
@@ -40,7 +40,9 @@
 <script setup lang="ts">
 import Card from 'primevue/card';
 import Button from 'primevue/button';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 </script>
 
 <style scoped>

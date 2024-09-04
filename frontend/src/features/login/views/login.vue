@@ -7,7 +7,7 @@
             <div class="form">
                 <h2>Login to Insription.tn</h2>
                 <form>
-                    <InputText class="formInput" v-model="cin" type="text" size="large" placeholder="Cin" :invalid="!cinValidator.test(cin)" />
+                    <InputText class="formInput" v-model="cin" type="text" size="large" placeholder="Cin" :invalid="cinValidator.test(cin)" />
                     <br>
                     <InputText class="formInput" v-model="password" type="password" size="large" placeholder="Password" />
                     <br>
@@ -31,7 +31,7 @@ import { useToast } from 'primevue/usetoast';
 import { showError, showSuccess } from '@/service/myToastService';
 
 const cin = ref("");
-const cinValidator = new RegExp("^\\d{8}$")
+const cinValidator = new RegExp("^$")
 const toast = useToast();
 const password = ref("");
 
@@ -39,7 +39,7 @@ const router = useRouter()
 
 const handleLogin = async () => {
     try {
-        if(cinValidator.test(cin.value)){
+        if(!cinValidator.test(cin.value)){
             await myApi.login(cin.value, password.value);
             showSuccess(toast,"Login success", "You'll be redirected to your home page")
             

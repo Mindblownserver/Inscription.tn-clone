@@ -36,7 +36,7 @@ import MyInputText from './LblInputText.vue';
 import Fieldset from 'primevue/fieldset';
 import Button from 'primevue/button';
 import { ref } from 'vue';
-import { Student } from '../../utilities/interfaces';
+import { Student } from '../../../../utilities/interfaces';
 import DatePicker from './DatePicker.vue';
 
 const selectedFile = ref<File | null>(null);

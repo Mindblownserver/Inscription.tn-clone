@@ -26,7 +26,7 @@
 import { onMounted, ref } from "vue";
 import DropDownBtn from "./DropDownBtn.vue"
 import { useStore } from "vuex";
-import { Student } from "@/features/student/utilities/interfaces";
+import { Student } from "@/utilities/interfaces";
 import {UserInfo, isRefreshTokenError} from "@/service/authService";
 import { tokenToId } from "@/service/tokenDecryptor";
 import { useRouter } from "vue-router";

@@ -1,4 +1,4 @@
-import { Student } from '@/features/student/utilities/interfaces';
+import { Etablissement, Inscription, Student } from '@/utilities/interfaces';
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { RefreshTokenErrorFct } from './authService';
 class MyAPI {
@@ -88,6 +88,15 @@ class MyAPI {
     }
   }
 
+  public async getInscriptionsParFac<T>(etabId: string):Promise<AxiosResponse<T>>{
+    try{
+      return this.instance.get<T>("/api/inscriptions/"+etabId);
+    }catch(error){
+      console.error("Error performing getInscriptionsParFac", error)
+      throw error;
+    }
+  }
+
   public async register(username: string, password: string): Promise<void> {
     try {
       await this.instance.post('/auth/register', { username, password });
@@ -126,5 +135,6 @@ class MyAPI {
       throw error;
     }
   }
+  
 }
 export const myApi  =new MyAPI("http://localhost:8080");

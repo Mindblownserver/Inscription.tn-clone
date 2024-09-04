@@ -22,7 +22,7 @@ import Divider from 'primevue/divider';
 import Form from "../components/Form.vue"
 import { onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
-import { Student } from '../../utilities/interfaces';
+import { Student } from '../../../../utilities/interfaces';
 import { tokenToId } from '@/service/tokenDecryptor';
 import { myApi } from '@/service/MyApi';
 import { isRefreshTokenError } from '@/service/authService';

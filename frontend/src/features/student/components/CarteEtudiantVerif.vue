@@ -20,37 +20,10 @@
     </div>
 </template>
 <script setup lang="ts">
-import { Etablissement, Filliere, Inscription,Student, University } from '../utilities/interfaces';
-
+import { Etablissement, Filliere, Inscription,Student, University } from '../../../utilities/interfaces';
+import {displayImageFromUint8Array} from "@/utilities/base64ImageConversion"
 // Create an object URL for the Blob
-function createImageUrl(base64Image: String, mimeType: string): string {
-    return `data:${mimeType};base64,${base64Image}`;
-}
 
-function displayImageFromUint8Array(base64ProfileImage: string, mimeType: string|null, base64EtabImage:string=" ",base64UniImage:string=" "): void {
-    const type = mimeType || 'application/octet-stream';
-
-    const profileUrl = createImageUrl(base64ProfileImage, type);
-    const etabUrl = createImageUrl(base64EtabImage,type)
-    const uniUrl = createImageUrl(base64UniImage,type)
-
-    const profileElement = document.getElementById("profile") as HTMLImageElement;
-    const etabElement = document.getElementById("etabImg") as HTMLImageElement;
-    const uniElement = document.getElementById("uniImg") as HTMLImageElement;
-
-    if (profileElement && etabElement && uniElement) {
-        profileElement.src = profileUrl;
-
-    } 
-    if(etabElement){
-        etabElement.src=etabUrl;
-    }
-    if(uniElement){
-        uniElement.src=uniUrl;
-    }
-    
-    
-}
 
 const loadCardInfo = function(inscriptionData:Inscription){
     let nomFr: HTMLElement = document.getElementById('nomFr') as HTMLElement
@@ -74,7 +47,7 @@ const loadCardInfo = function(inscriptionData:Inscription){
         fillLib.innerText=fill.nomArFill.split(" ").slice(3).join(" ");
         uniTitleAr.innerText = etab.nomArEtab;
         uniTitleFr.innerText = etab.nomFrEtab;
-        displayImageFromUint8Array(etu.photoEtu,etab.photoEtab, uni.photoUni, 'application/octet-stream');
+        displayImageFromUint8Array(etu.photoEtu, etab.photoEtab, uni.photoUni);
     }
 
 }
@@ -91,7 +64,7 @@ const loadPreviewCardInfo = function(etu:Student){
         nomFr.innerText=etu.prenomFrEtu + " "+etu.nomFrEtu
         nomAr.innerText= etu.prenomArEtu +" "+etu.nomArEtu
         date.innerText = `Né(e) le ${birthDate.getDate()}/${birthDate.getMonth()+1}/${birthDate.getFullYear()}`;
-        displayImageFromUint8Array(etu.photoEtu, 'application/octet-stream');
+        displayImageFromUint8Array(etu.photoEtu);
     }
 
 }
