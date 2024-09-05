@@ -68,18 +68,19 @@ public class InscriptionRepository {
         }
     }
 
-    public List<Inscription> getInscriptionsParFac(String idFac) throws SQLException{
+    public List<Inscription> getInscriptionsParFac(String idFac, String anneeUni) throws SQLException{
         List<Inscription> inscripList= new ArrayList<>();
-        String sql = "select AU, ETU, FILL, Niveau, paid from inscription where fac=?";
+        String sql = "select AU, ETU, FILL, Niveau, paid from inscription where fac=? and AU=?";
         try(Connection conn = dataSource.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)){
                 ps.setString(1, idFac);
+                ps.setString(2, anneeUni);
                 try(ResultSet rs = ps.executeQuery()){
                     while(rs.next()){
                         Etudiant etu = getEtudiantByCin(rs.getString("ETU"));
                         Filliere fill= getFilliereById(rs.getString("Fill"), rs.getInt("Niveau"));
                         Fill_Etab fill_etab = getFillEtabById(idFac, fill.idFill(), rs.getInt("niveau"));
-                        Inscription insc = new Inscription(etu, rs.getString("AU"), fill_etab, rs.getInt("paid"));
+                        Inscription insc = new Inscription(etu, anneeUni, fill_etab, rs.getInt("paid"));
                         inscripList.add(insc);
                     }
                     return inscripList;

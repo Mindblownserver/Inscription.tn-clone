@@ -52,12 +52,12 @@ public class InscriptionResources {
         }
     }
     
-    @Path("inscriptions/{facId}")
+    @Path("inscriptions/{au}/{facId}")
     @GET
     @RolesAllowed("university")
-    public Response getInscriptionsByFacId(@PathParam("facId") String facId){
+    public Response getInscriptionsByFacId(@PathParam("facId") String facId, @PathParam("au") String anneeUni){
         try {
-            List<Inscription> inscriptionList = inscriptionRepository.getInscriptionsParFac(facId);
+            List<Inscription> inscriptionList = inscriptionRepository.getInscriptionsParFac(facId,anneeUni);
             if(inscriptionList.size()>0)
                 return Response.ok(inscriptionList).build();
             return Response.status(404).entity("Inscriptions Not Found").build();

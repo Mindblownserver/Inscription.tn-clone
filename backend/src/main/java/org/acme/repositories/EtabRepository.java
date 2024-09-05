@@ -87,5 +87,9 @@ public class EtabRepository {
             }
         }
     }
-    
+    /* This year's uni students 
+     * select au, count(etu) etudiants from inscription 
+        where au = (select max(au) from inscription)
+        group by au;
+     */
 }
