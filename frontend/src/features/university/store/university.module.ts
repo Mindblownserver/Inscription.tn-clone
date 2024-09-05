@@ -1,6 +1,6 @@
 import {myApi} from "@/service/MyApi";
 import { Inscription } from "@/utilities/interfaces";
-import { ActionContext } from "vuex";
+import { ActionContext, Payload } from "vuex";
 
 interface State {
     loading: boolean;
@@ -30,10 +30,11 @@ export const uniModule={
 
     },
     actions:{
-        async getInscriptionByFac({commit}: ActionContext<State, any>, idEtab:string){
+        async getInscriptionByFac({commit}: ActionContext<State, any>, payload:[string, string]){
+            const [idEtab, anneeUni] = payload;
             try {
                 commit("setLoading", true);
-                const res = await myApi.getInscriptionsParFac<Array<Inscription>>(idEtab);
+                const res = await myApi.getInscriptionsParFac<Array<Inscription>>(idEtab,anneeUni);
                 commit("setInscriptions", res.data);
             } catch (error) {
                 commit("setError", error);

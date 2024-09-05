@@ -2,7 +2,8 @@ function createImageUrl(base64Image: String, mimeType: string): string {
     return `data:${mimeType};base64,${base64Image}`;
 }
 
-function displayImageFromUint8Array(base64ProfileImage: string, mimeType:string="application/octet-stream", base64EtabImage:string=" ",base64UniImage:string=" "): void {
+function displayImageFromUint8Array(base64ProfileImage: string, base64EtabImage:string=" ",base64UniImage:string=" "): void {
+    const mimeType:string="application/octet-stream"
 
     const profileUrl = createImageUrl(base64ProfileImage, mimeType);
     const etabUrl = createImageUrl(base64EtabImage,mimeType)
@@ -18,6 +19,7 @@ function displayImageFromUint8Array(base64ProfileImage: string, mimeType:string=
     } 
     if(etabElement){
         etabElement.src=etabUrl;
+        console.debug("Seen etab")
     }
     if(uniElement){
         uniElement.src=uniUrl;

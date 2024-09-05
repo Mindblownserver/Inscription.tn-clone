@@ -72,10 +72,10 @@ const getLoading = computed(()=>store.state.uniModule.loading);
 const getInscriptions = computed(()=>store.state.uniModule.inscriptions);
 
 const handleAuChange = ()=>{
-    console.log("Changed")
+    store.dispatch("uniModule/getInscriptionByFac", [tokenToId(localStorage.getItem("accessToken")),au.value])
 }
 onMounted(()=>{
-    store.dispatch("uniModule/getInscriptionByFac", tokenToId(localStorage.getItem("accessToken")))
+    store.dispatch("uniModule/getInscriptionByFac", [tokenToId(localStorage.getItem("accessToken")),au.value])
 })
 </script>
 

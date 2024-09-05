@@ -7,6 +7,12 @@
           <li><router-link to="/student/profile">Profile</router-link></li>
           <li><router-link to="/faq">FAQ</router-link></li>
         </ul>
+        <ul class="middle" v-else-if="isUniversity()">
+          <li><router-link to="/university">Home</router-link></li>
+          <li><router-link to="/registration-period">Registration Period</router-link></li>
+          <li><router-link to="/contactus">Contact Us</router-link></li>
+          <li><router-link to="/faq">FAQ</router-link></li>
+        </ul>
         <ul class="middle" v-else>
           <li><router-link to="/student">student</router-link></li>
           <li><router-link to="/university">university</router-link></li>
@@ -58,7 +64,7 @@ onMounted(() => {
           console.error("Navbar: ",error)
       })
     }else if(isUniversity()){
-      console.log("Uni detected")
+      console.log("Uni")
     }
   }else{
     console.error("Not logged in..yet :)")

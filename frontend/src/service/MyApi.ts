@@ -88,9 +88,9 @@ class MyAPI {
     }
   }
 
-  public async getInscriptionsParFac<T>(etabId: string):Promise<AxiosResponse<T>>{
+  public async getInscriptionsParFac<T>(etabId: string, anneeUni:string):Promise<AxiosResponse<T>>{
     try{
-      return this.instance.get<T>("/api/inscriptions/"+etabId);
+      return this.instance.get<T>("/api/inscriptions/"+anneeUni+"/"+etabId);
     }catch(error){
       console.error("Error performing getInscriptionsParFac", error)
       throw error;

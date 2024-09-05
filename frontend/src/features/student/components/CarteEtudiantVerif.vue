@@ -4,7 +4,7 @@
         
         <div class="carteElements">
             <img src="../../../assets/images/pixelcut-export.png" alt="">
-            <h3 class="title">Carte Etudiant 202x - 202x</h3>
+            <h3 id="title">Carte Etudiant 202x - 202x</h3>
             <img class="profile" id="profile" src="../../../assets/images/profileBlob.png" alt="">
             <p id="nomAr" class="nameAr">فولان فولاني</p>
             <p id="nomFr" class="nameFr">Foulan l Foulani</p>
@@ -15,7 +15,7 @@
             <p id="uniTitleAr" >xxx</p>
             <img id="etabImg"  src="" alt="">
             <img id="uniImg"  src="" alt="">
-            <img class="Qr" src="../../../assets/images/QrCode.png" alt="">
+            <img class="Qr" src="../../../assets/images/frame.png" alt="">
         </div>
     </div>
 </template>
@@ -33,6 +33,7 @@ const loadCardInfo = function(inscriptionData:Inscription){
     let fillLib:HTMLElement = document.getElementById('fillLib') as HTMLElement
     let uniTitleFr: HTMLElement = document.getElementById('uniTitleFr') as HTMLElement
     let uniTitleAr:HTMLElement = document.getElementById('uniTitleAr') as HTMLElement
+    let auTag = document.getElementById("title") as HTMLElement;
 
     let uni:University = inscriptionData.fill_etab.etab.uni;
     let etab:Etablissement = inscriptionData.fill_etab.etab;
@@ -40,6 +41,7 @@ const loadCardInfo = function(inscriptionData:Inscription){
     let fill:Filliere = inscriptionData.fill_etab.fill;
     let birthDate:Date = new Date(etu.dateNaiss);
     if(nomFr && nomAr && date && niveauFill && fillLib){
+        auTag.innerText = "Carte Etudiant "+ inscriptionData.au
         nomFr.innerText=etu.prenomFrEtu + " "+etu.nomFrEtu
         nomAr.innerText= etu.prenomArEtu +" "+etu.nomArEtu
         date.innerText = `Né(e) le ${birthDate.getDate()}/${birthDate.getMonth()+1}/${birthDate.getFullYear()}`;
@@ -92,7 +94,7 @@ img{
 .carteElements{
     position: relative;
 }
-.title{
+#title{
     text-transform: uppercase;
     position: absolute;
     top: 45px;
